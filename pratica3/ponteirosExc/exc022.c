@@ -5,17 +5,7 @@ deve retornar o valor UM (1). Utilize aritmetica de ponteiros para manipulacÂ¸ Â
 #include <stdio.h>
 #include <stdlib.h>
 
-int somaVetores(int *vet1, int *vet2, int *vet3, int size1, int size2) {
-    if(size1 != size2) {
-        return 0;
-    }
-    else {
-        for(int i = 0; i < size1; i++) {
-            *(vet3 + i) = *(vet2 + i) + *(vet1 + i);
-        }
-    }
-    return 1;
-}
+int somaVetores(int *vet1, int *vet2, int *vet3, int size1, int size2); 
 
 int main(void) {
     int *vet1, *vet2, *vet3, size1, size2;
@@ -59,3 +49,16 @@ int main(void) {
 
     return 0;
 }
+
+int somaVetores(int *vet1, int *vet2, int *vet3, int size1, int size2) {
+    if(size1 != size2) {
+        return 0;
+    }
+    else {
+        for(int i = 0; i < size1; i++) {
+            *(vet3 + i) = *(vet2 + i) + *(vet1 + i);
+        }
+    }
+    return 1;
+}
+
