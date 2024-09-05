@@ -18,7 +18,7 @@ Aluno* criarListaVazia() {
 Aluno* inserirAluno(char nome[], float notaPratica, float notaTeorica) { 
     Aluno* novo;
     novo = (Aluno *)malloc(sizeof(Aluno));
-    float = media;
+    float media;
 
     if(novo == NULL) {
         printf("\nNAO foi possivel alocar memoria!!\n");
@@ -29,7 +29,14 @@ Aluno* inserirAluno(char nome[], float notaPratica, float notaTeorica) {
     novo->notaPratica = notaPratica;
     novo->notaTeorica = notaTeorica;
 
-    if(nota)
+    media = (notaPratica + notaTeorica / 2);
+    
+    if(media > 70) {
+        if(cabecaMedia == NULL) cabecaMedia == novo;
+        else {
+        }
+    }
+    
     novo->prox = cabeca;
     cabeca = novo;
 
@@ -138,6 +145,7 @@ void menuAluno() {
 
 int main(void) {
     cabeca = criarListaVazia();
+    cabecaMedia = criarListaVazia();
 
     menuAluno();
 
