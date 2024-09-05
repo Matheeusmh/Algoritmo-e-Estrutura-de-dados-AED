@@ -9,7 +9,7 @@ typedef struct aluno{
     struct aluno *prox;
 } Aluno;
 
-Aluno *cabeca;
+Aluno *cabeca, *cabecaMedia;
 
 Aluno* criarListaVazia() {
     return NULL;
@@ -18,6 +18,7 @@ Aluno* criarListaVazia() {
 Aluno* inserirAluno(char nome[], float notaPratica, float notaTeorica) { 
     Aluno* novo;
     novo = (Aluno *)malloc(sizeof(Aluno));
+    float = media;
 
     if(novo == NULL) {
         printf("\nNAO foi possivel alocar memoria!!\n");
@@ -28,6 +29,7 @@ Aluno* inserirAluno(char nome[], float notaPratica, float notaTeorica) {
     novo->notaPratica = notaPratica;
     novo->notaTeorica = notaTeorica;
 
+    if(nota)
     novo->prox = cabeca;
     cabeca = novo;
 
@@ -55,15 +57,34 @@ Aluno* mediaSuperior() {
     Aluno *ptr;
     ptr = cabeca;
 
-    media = (ptr->notaPratica + ptr->notaTeorica) / 2;
 
     while(ptr != NULL) {
+        media = (ptr->notaPratica + ptr->notaTeorica) / 2;
         if(media > 70) {
             printf("Nome: %s\n", ptr->nome);
             printf("Nota pratica: %.2f\n", ptr->notaPratica);
             printf("Nota teorica: %.2f\n", ptr->notaTeorica);
         }
 
+        ptr = ptr->prox;
+    }
+
+    return ptr;
+}
+
+Aluno* removerAluno(char *nome) {
+    Aluno *ptr, *ant;
+    ptr = cabeca;
+    ant = cabeca;
+
+    while(ptr != NULL) {
+        if(strcmp(ptr->nome, nome) == 0) {
+            ant->prox = ptr->prox;
+            if(ptr == cabeca) cabeca = cabeca->prox;
+            printf("Aluno removido com sucesso!!\n");
+            return ant;
+        }
+        ant = ptr;
         ptr = ptr->prox;
     }
 
@@ -103,6 +124,10 @@ void menuAluno() {
         case 3:
             mediaSuperior();
             break;
+        case 4:
+            printf("Digite o aluno a ser removido: ");
+            scanf("  %[^\n]", nome);
+            removerAluno(nome);
         default:
             break;
         }
