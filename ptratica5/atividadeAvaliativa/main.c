@@ -9,38 +9,40 @@ typedef struct aluno{
     struct aluno *prox;
 } Aluno;
 
+Aluno *cabeca;
+
 Aluno* criarListaVazia() {
     return NULL;
 }
 
-
-
-Aluno* inserirAluno(char nome[], float notaPratica, float notaTeorica, Aluno *lAluno) { 
+Aluno* inserirAluno(char nome[], float notaPratica, float notaTeorica) { 
     Aluno* novo;
     novo = (Aluno *)malloc(sizeof(Aluno));
 
     if(novo == NULL) {
         printf("\nNAO foi possivel alocar memoria!!\n");
-        return lAluno;
+        return cabeca;
     }
 
     strcpy(novo->nome, nome);
     novo->notaPratica = notaPratica;
     novo->notaTeorica = notaTeorica;
-    novo->prox = lAluno;
+
+    novo->prox = cabeca;
+    cabeca = novo;
 
     return novo;
 }
 
-void encontrarNotas(Aluno *lAluno, char *nome) {
+Aluno* encontrarNotas(char *nome) {
     Aluno *ptr;
-    ptr = lAluno;
+    ptr = cabeca;
 
     while(ptr != NULL) {
         if(strcmp(ptr->nome, nome) == 0) {
             printf("Nota pratica: %.2f\n", ptr->notaPratica);
             printf("Nota teorica: %.2f\n", ptr->notaTeorica);
-            break;
+            return ptr;
         }
         ptr = ptr->prox;
     }
@@ -48,14 +50,33 @@ void encontrarNotas(Aluno *lAluno, char *nome) {
     printf("Aluno nao encontrado!!\n");
 }
 
-void menuAluno( Aluno *lAluno) {
+Aluno* mediaSuperior() {
+    float media;
+    Aluno *ptr;
+    ptr = cabeca;
+
+    media = (ptr->notaPratica + ptr->notaTeorica) / 2;
+
+    while(ptr != NULL) {
+        if(media > 70) {
+            printf("Nome: %s\n", ptr->nome);
+            printf("Nota pratica: %.2f\n", ptr->notaPratica);
+            printf("Nota teorica: %.2f\n", ptr->notaTeorica);
+        }
+
+        ptr = ptr->prox;
+    }
+
+    return ptr;
+}
+
+void menuAluno() {
     char nome[50];
     int op = 10;
     float notaPratica, notaTeorica;
 
-
     while(op != 0) {
-        printf("[1] Inserir um aluno\n");
+        printf("\n[1] Inserir um aluno\n");
         printf("[2] Encontrar notas de um aluno\n");
         printf("[3] Lista de alunos com media superior a 70\n");
         printf("[4] Remover um aluno\n");
@@ -66,22 +87,21 @@ void menuAluno( Aluno *lAluno) {
         switch (op)
         {
         case 1:
-            printf("Digite o nome do aluno: ");
-            getchar();
-            fgets(nome, 50, stdin);
-            nome[strcspn(nome, "\n")] = '\0';
+            printf("\nDigite o nome do aluno: ");
+            scanf(" %[^\n]", nome);
             printf("Digite a nota pratica do aluno: ");
             scanf("%f", &notaPratica);
             printf("Digite a nota teorica do aluno: ");
             scanf("%f", &notaTeorica);
-            lAluno = inserirAluno(nome, notaPratica, notaTeorica, lAluno);
+            inserirAluno(nome, notaPratica, notaTeorica);
             break;
         case 2:
-            printf("Digite o nome do aluno que deseja encontrar: ");
-            fgets(nome, 50, stdin);
-            getchar();
-            nome[strcspn(nome, "\n")] = '\0';
-            encontrarNotas(lAluno, nome);
+            printf("\nDigite o nome do aluno que deseja encontrar: ");
+            scanf(" %[^\n]", nome);
+            encontrarNotas(nome);
+            break;
+        case 3:
+            mediaSuperior();
             break;
         default:
             break;
@@ -92,10 +112,9 @@ void menuAluno( Aluno *lAluno) {
 
 
 int main(void) {
-    Aluno *lAluno;
-    lAluno = criarListaVazia();
+    cabeca = criarListaVazia();
 
-    menuAluno(lAluno);
+    menuAluno();
 
     return 0;
 }
