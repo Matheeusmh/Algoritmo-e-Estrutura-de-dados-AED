@@ -19,5 +19,6 @@ int countRec(No *lista);
 int countNoRec(No *lista);
 int isPrimo(char palavra[]);
 void tamanhoPrimo(No *lista, No **listaPrimo);
+void removeRepetidos(No **lista);
 
 #endif

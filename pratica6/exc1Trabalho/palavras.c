@@ -77,6 +77,34 @@ void removeLista(No **lista, char *palavra)
         }
     }
 }
+void removeRepetidos(No **lista)
+{
+    if (*lista == NULL)
+        return;
+    No *aux1 = *lista;
+
+    while (aux1 != NULL && aux1->prox != NULL)
+    {
+        No *anterior = aux1;
+        No *aux2 = aux1->prox;
+
+        while (aux2 != NULL)
+        {
+            if (strcmp(aux1->palavra, aux2->palavra) == 0)
+            {
+                anterior->prox = aux2->prox;
+                free(aux2);
+                aux2 = anterior->prox;
+            }
+            else
+            {
+                anterior = aux2;
+                aux2 = aux2->prox;
+            }
+        }
+        aux1 = aux1->prox;
+    }
+}
 
 void busca(No **lista, char *palavra)
 {

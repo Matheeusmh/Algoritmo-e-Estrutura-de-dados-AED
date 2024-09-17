@@ -9,11 +9,11 @@ Girassol
 Chocolate
 Aviao
 Estrela
-Planeta
+Biblioteca
 Musica
 Deserto
 Floresta
-Carro
+Aviao
 Pintura
 Teatro
 Jogo

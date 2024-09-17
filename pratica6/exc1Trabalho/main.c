@@ -27,23 +27,26 @@ int main(void)
     int tamanhoRec = countRec(lista);
 
     printf("Tamanho da lista com recursao: %d\n", tamanhoRec);
-    printf("Tamanho da lista sem recursao: %d\n", countNoRec(lista));
+    printf("Tamanho da lista sem recursao: %d\n\n", countNoRec(lista));
 
     tamanhoPrimo(lista, &listaPrimo);
+    printf("Lista:\n");
     imprimeLista(lista);
-    printf("\n");
+    printf("\nLista de palavras com o tamanho primo:\n");
     imprimeLista(listaPrimo);
 
     char exemploRemove[] = "Relampago";
     removeLista(&lista, exemploRemove);
-    printf("\n");
+    printf("\nRemovendo a paralavra RELAMPAGO...\n");
     imprimeLista(lista);
 
     char exemploBusca[] = "Saturno";
-    printf("\n");
+    printf("\nBuscando a palavra SATURNO...\n");
     busca(&lista, exemploBusca);
-    printf(" %s!\n", exemploBusca);
-    
+
+    printf("\n\nRemovendo palavras repetidas...\n");
+    removeRepetidos(&lista);
+    imprimeLista(lista);
 
     No *aux;
     while (lista != NULL)

@@ -58,6 +58,7 @@ void removeListaM(No **lista) {
         }
     }
 }
+
 int main(void) {
   No* lista;
   lista = (No*) malloc (sizeof(No));

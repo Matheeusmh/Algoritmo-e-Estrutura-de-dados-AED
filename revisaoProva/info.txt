@@ -1,0 +1,4 @@
+Vantagens do vetor sobre a lista encadeada:
+	No vetor a aritmética de ponteiros é mais vantajoso na busca de um elemento, já que na lista encadeada conseguimos andar só para frente.
+Vantagens da lista encadeada sobre o vetor comum:
+	Na lista encadeada temos mais facilidade na inserção de elementos. 
