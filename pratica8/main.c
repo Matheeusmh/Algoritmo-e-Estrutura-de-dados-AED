@@ -65,37 +65,44 @@ void abastecerNaves(Descritor **info, int unidCombustivel) {
     } while(aux != (*info)->head);
 }
 
-void removeNave(No **nave, Descritor **info) {
-    if((*info)->head == (*info)->tail) {
-        (*info)->head = NULL;
-        (*info)->tail = NULL;
+void removeNave(No **ll, Descritor **info) {
+    if ((*info)->head == NULL) {
         return;
     }
-    
+
     No *aux = (*info)->head;
+    No *ant = (*info)->head;
 
-    while(aux->prox != *nave) aux = aux->prox;
-    
-    if(*nave == (*info)->tail) {
-        aux->prox = (*info)->head;
-        (*info)->tail = aux;
-        No *temp = *nave;
-        *nave = aux;
-        free(temp);
-        return;
-    }
 
-    if(*nave == (*info)->head) {
-        (*info)->tail->prox = (*info)->head->prox;
-        (*info)->head = (*nave)->prox;
-        free(*nave);
-        *nave = (*info)->head; 
-        return;
-    }
-
-    aux->prox = (*nave)->prox;
-    free(*nave);    
-    *nave = aux->prox;
+    do {
+        if (aux->capacidadeMax == aux->quantCombustivel) {
+            while(ant->prox != aux) ant = ant->prox;
+            if (aux == (*info)->head && aux == (*info)->tail) {
+                free(aux);
+                (*info)->head = NULL;
+                (*info)->tail = NULL;
+                *ll = NULL;
+                return;
+            } else if (aux == (*info)->head) {
+                (*info)->tail->prox = aux->prox;
+                (*info)->head = aux->prox;
+                free(aux);
+                aux = (*info)->head;
+            } else if (aux == (*info)->tail) {
+                ant->prox = aux->prox;
+                (*info)->tail = ant;
+                free(aux);
+                return;
+            } else {
+                ant->prox = aux->prox;
+                free(aux);
+                aux = (*info)->head;
+            }
+        } 
+        else {
+            aux = aux->prox;
+        }
+    } while (aux != (*info)->head);
 }
 
 void imprimeCiclo(Descritor **info) {
@@ -117,17 +124,7 @@ void imprimeCiclo(Descritor **info) {
         }
         aux = aux->prox;
     }while(aux != (*info)->head);
- 
-    aux = (*info)->head;
 
-    do {
-        if(aux->capacidadeMax == aux->quantCombustivel) {
-            removeNave(&aux, info);
-            if((*info)->head == NULL) break;
-        }
-        aux = aux->prox;
-    }while(aux != (*info)->head);
- 
     printf("\n");
     printf("____________________________________\n\n");
 }
@@ -175,9 +172,11 @@ void menu(No **ll, Descritor *info) {
             case 0:
                 return;
             default:
-                printf("Opcao invalida!\n");
+                printf("Opcao invalida!\n\n");
                 break;      
         }
+
+        removeNave(ll, &info);
     }
 } 
 
