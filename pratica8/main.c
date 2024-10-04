@@ -1,8 +1,9 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include"listaCircular.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "listaCircular.h"
 
-int main(void) {
+int main(void)
+{
     Descritor info;
     No *lista = NULL;
     info.head = NULL;
