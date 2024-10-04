@@ -65,14 +65,13 @@ void abastecerNaves(Descritor **info, int unidCombustivel) {
     } while(aux != (*info)->head);
 }
 
-void removeNave(No **ll, Descritor **info) {
+void removeNave(No **ll, Descritor **info, int *count) {
     if ((*info)->head == NULL) {
         return;
     }
 
     No *aux = (*info)->head;
     No *ant = (*info)->head;
-
 
     do {
         if (aux->capacidadeMax == aux->quantCombustivel) {
@@ -88,6 +87,7 @@ void removeNave(No **ll, Descritor **info) {
                 (*info)->head = aux->prox;
                 free(aux);
                 aux = (*info)->head;
+                (*count)--;
             } else if (aux == (*info)->tail) {
                 ant->prox = aux->prox;
                 (*info)->tail = ant;
@@ -97,15 +97,16 @@ void removeNave(No **ll, Descritor **info) {
                 ant->prox = aux->prox;
                 free(aux);
                 aux = (*info)->head;
+                (*count)--;
             }
         } 
         else {
             aux = aux->prox;
         }
-    } while (aux != (*info)->head);
+    } while ((*count) != 0);
 }
 
-void imprimeCiclo(Descritor **info) {
+void imprimeCiclo(Descritor **info, int *count) {
     printf("\n     __INFORMACOES DO CICLO__");
     if((*info)->head == NULL) {
         printf("\nNENHUMA NAVE NO CICLO!!\n\n");
@@ -120,18 +121,18 @@ void imprimeCiclo(Descritor **info) {
         printf("\nCapacidade maxima: %d\n", aux->capacidadeMax);
         printf("Quantidade atual de combustivel: %d\n", aux->quantCombustivel);
         if(aux->capacidadeMax == aux->quantCombustivel) {
+            (*count)++;
             printf("NAVE CHEIA! REMOVENDO NAVE DOS PROXIMOS CICLOS...\n\n");
         }
         aux = aux->prox;
     }while(aux != (*info)->head);
 
-    printf("\n");
-    printf("____________________________________\n\n");
+    printf("\n\n");
 }
 
 void menu(No **ll, Descritor *info) {
     while(1) {
-        int op = 0, capacidadeMax = 0, quantInic = 0, unidCombustivel = 0;
+        int op = 0, capacidadeMax = 0, quantInic = 0, unidCombustivel = 0, count = 0;
         printf("\t__CICLO DE NAVES__\n");
         printf("[1] Adicionar uma nave ao ciclo\n");
         printf("[2] Nao adicionar uma nave nesse ciclo\n");
@@ -155,7 +156,7 @@ void menu(No **ll, Descritor *info) {
                 adicionarElemento(capacidadeMax, quantInic, ll, &info);  
                 abastecerNaves(&info, unidCombustivel);
 
-                imprimeCiclo(&info);
+                imprimeCiclo(&info, &count);
                 break;
             case 2:        
                 if(info->head == NULL) {
@@ -167,7 +168,7 @@ void menu(No **ll, Descritor *info) {
 
                 abastecerNaves(&info, unidCombustivel);
 
-                imprimeCiclo(&info);
+                imprimeCiclo(&info, &count);
                 break;
             case 0:
                 return;
@@ -176,7 +177,7 @@ void menu(No **ll, Descritor *info) {
                 break;      
         }
 
-        removeNave(ll, &info);
+        removeNave(ll, &info, &count);
     }
 } 
 
