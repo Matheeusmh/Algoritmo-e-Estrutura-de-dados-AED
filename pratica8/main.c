@@ -27,7 +27,7 @@ void iniciarLista(No **ll, int capacidadeMax,int quantInicial, Descritor **info)
 }
 
 void adicionarElemento(int capacidadeMax, int quantInicial, No **ll, Descritor **info) {
-    if(*ll == NULL) {
+    if((*info)->head == NULL) {
         iniciarLista(ll, capacidadeMax, quantInicial, info);
         return;
     }
@@ -48,12 +48,16 @@ void adicionarElemento(int capacidadeMax, int quantInicial, No **ll, Descritor *
 }
 
 void abastecerNaves(Descritor **info, int unidCombustivel) {
+    if((*info)->head == NULL) {
+        return;
+    }
+
     if((*info)->head == (*info)->head->prox) {
         (*info)->head->quantCombustivel += unidCombustivel;
         return;
     }
 
-    No *aux = (*info)->head->prox;
+    No *aux = (*info)->head;
 
     do {
         aux->quantCombustivel += unidCombustivel;
@@ -63,7 +67,6 @@ void abastecerNaves(Descritor **info, int unidCombustivel) {
 
 void removeNave(No **nave, Descritor **info) {
     if((*info)->head == (*info)->tail) {
-        free(*nave);
         (*info)->head = NULL;
         (*info)->tail = NULL;
         return;
@@ -73,35 +76,32 @@ void removeNave(No **nave, Descritor **info) {
 
     while(aux->prox != *nave) aux = aux->prox;
     
-    if(aux->prox == (*info)->tail) {
-        free((*info)->tail);
-        (*info)->tail->prox = (*info)->head;
+    if(*nave == (*info)->tail) {
+        aux->prox = (*info)->head;
         (*info)->tail = aux;
+        No *temp = *nave;
+        *nave = aux;
+        free(temp);
         return;
     }
 
-    if(aux->prox == (*info)->head) {
+    if(*nave == (*info)->head) {
         (*info)->tail->prox = (*info)->head->prox;
         (*info)->head = (*nave)->prox;
-        free(nave);
+        free(*nave);
+        *nave = (*info)->head; 
         return;
     }
 
     aux->prox = (*nave)->prox;
-    free(nave);    
+    free(*nave);    
+    *nave = aux->prox;
 }
 
 void imprimeCiclo(Descritor **info) {
-    if((*info)->head->prox == (*info)->head) {
-        if((*info)->head == NULL) {
-            printf("NENHUMA NAVE NO CICLO!!");
-            return;
-        }
-        printf("\nCapacidade maxima: %d\n", (*info)->head->capacidadeMax);
-        printf("Quantidade atual de combustivel: %d\n", (*info)->head->quantCombustivel);
-        if((*info)->head->capacidadeMax == (*info)->head->quantCombustivel) {
-            printf("NAVE CHEIA!\n\n");
-        }
+    printf("\n     __INFORMACOES DO CICLO__");
+    if((*info)->head == NULL) {
+        printf("\nNENHUMA NAVE NO CICLO!!\n\n");
         return;
     }
 
@@ -109,21 +109,35 @@ void imprimeCiclo(Descritor **info) {
 
 
     do {
+        if(aux->quantCombustivel > aux->capacidadeMax) aux->quantCombustivel = aux->capacidadeMax;
         printf("\nCapacidade maxima: %d\n", aux->capacidadeMax);
-        printf("Quantidade de combustivel: %d\n", aux->quantCombustivel);
+        printf("Quantidade atual de combustivel: %d\n", aux->quantCombustivel);
         if(aux->capacidadeMax == aux->quantCombustivel) {
             printf("NAVE CHEIA! REMOVENDO NAVE DOS PROXIMOS CICLOS...\n\n");
-            removeNave(&aux, info);
         }
         aux = aux->prox;
     }while(aux != (*info)->head);
+ 
+    aux = (*info)->head;
+
+    do {
+        if(aux->capacidadeMax == aux->quantCombustivel) {
+            removeNave(&aux, info);
+            if((*info)->head == NULL) break;
+        }
+        aux = aux->prox;
+    }while(aux != (*info)->head);
+ 
+    printf("\n");
+    printf("____________________________________\n\n");
 }
 
 void menu(No **ll, Descritor *info) {
     while(1) {
         int op = 0, capacidadeMax = 0, quantInic = 0, unidCombustivel = 0;
-        printf("[1] Adicionar no inicio\n");
-        printf("[2] Nao adicionar\n");
+        printf("\t__CICLO DE NAVES__\n");
+        printf("[1] Adicionar uma nave ao ciclo\n");
+        printf("[2] Nao adicionar uma nave nesse ciclo\n");
         printf("[0] Encerrar programa\n");
         printf("Escolha uma opcao: ");
 
@@ -133,6 +147,7 @@ void menu(No **ll, Descritor *info) {
 
         switch(op) {
             case 1:
+                printf("\t\t__NOVA NAVE__\n");
                 printf("Digite a capacidade maxima de combustivel da nave: ");
                 scanf("%d", &capacidadeMax);
                 printf("Digite a quantidade inicial de combustivel: ");
@@ -145,8 +160,12 @@ void menu(No **ll, Descritor *info) {
 
                 imprimeCiclo(&info);
                 break;
-            case 2: 
-                printf("\n\nDigite a quantidade de combustivel a ser inserido nesse ciclo: ");
+            case 2:        
+                if(info->head == NULL) {
+                    printf("\nNENHUMA NAVE NO CICLO!!\n\n");
+                    break;
+                }
+                printf("\nDigite a quantidade de combustivel a ser inserido nesse ciclo: ");
                 scanf("%d", &unidCombustivel);
 
                 abastecerNaves(&info, unidCombustivel);
