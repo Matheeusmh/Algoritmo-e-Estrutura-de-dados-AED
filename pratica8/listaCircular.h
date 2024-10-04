@@ -18,5 +18,4 @@ void removeNave(No **ll, Descritor **info, int *count);
 void imprimeCiclo(Descritor **info, int *count);
 void menu(No **ll, Descritor *info);
 
-
 #endif

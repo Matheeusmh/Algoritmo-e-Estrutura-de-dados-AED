@@ -1,6 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include"listaCircular.c"
+#include"listaCircular.h"
 
 void iniciarLista(No **ll, int capacidadeMax,int quantInicial, Descritor **info) {
     *ll = (No *)malloc(sizeof(No));
