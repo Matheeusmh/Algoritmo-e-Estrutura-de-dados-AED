@@ -1,3 +1,7 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include"listaCircular.c"
+
 void iniciarLista(No **ll, int capacidadeMax,int quantInicial, Descritor **info) {
     *ll = (No *)malloc(sizeof(No));
     if (*ll == NULL) {
@@ -165,4 +169,3 @@ void menu(No **ll, Descritor *info) {
         removeNave(ll, &info, &count);
     }
 } 
-
