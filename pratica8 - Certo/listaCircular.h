@@ -16,8 +16,7 @@ typedef struct
 void iniciarLista(No **ll, int capacidadeMax, int quantInicial, Descritor **info);
 void adicionarElemento(int capacidadeMax, int quantInicial, No **ll, Descritor **info);
 void abastecerNaves(Descritor **info, int unidCombustivel);
-void removeNave(No **ll, Descritor **info, int *count);
-void imprimeCiclo(Descritor **info, int *count);
+void imprimeCiclo(Descritor **info);
 void menu(No **ll, Descritor *info);
 
 #endif

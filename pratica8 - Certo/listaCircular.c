@@ -63,68 +63,9 @@ void abastecerNaves(Descritor **info, int unidCombustivel)
     } while (aux != (*info)->head);
 }
 
-void removeNave(No **ll, Descritor **info, int *count)
+void imprimeCiclo(Descritor **info)
 {
-    if ((*info)->head == NULL)
-    {
-        return;
-    }
-
-    No *aux = (*info)->head;
-    No *ant = (*info)->head;
-
-    do
-    {
-        if (aux->capacidadeMax == aux->quantCombustivel)
-        {
-            while (ant->prox != aux)
-                ant = ant->prox;
-            if (aux == (*info)->head && aux == (*info)->tail)
-            {
-                free(aux);
-                (*info)->head = NULL;
-                (*info)->tail = NULL;
-                *ll = NULL;
-                return;
-            }
-            else if (aux == (*info)->head)
-            {
-                (*info)->tail->prox = aux->prox;
-                (*info)->head = aux->prox;
-                free(aux);
-                aux = (*info)->head;
-                (*count)--;
-            }
-            else if (aux == (*info)->tail)
-            {
-                ant->prox = aux->prox;
-                (*info)->tail = ant;
-                free(aux);
-                return;
-            }
-            else
-            {
-                ant->prox = aux->prox;
-                free(aux);
-                aux = (*info)->head;
-                (*count)--;
-            }
-        }
-        else
-        {
-            aux = aux->prox;
-        }
-    } while ((*count) != 0);
-}
-
-void imprimeCiclo(Descritor **info, int *count)
-{
-    printf("\n     __INFORMACOES DO CICLO__");
-    if ((*info)->head == NULL)
-    {
-        printf("\nNENHUMA NAVE NO CICLO!!\n\n");
-        return;
-    }
+    printf("\n     __NAVES__");
 
     No *aux = (*info)->head;
 
@@ -136,8 +77,7 @@ void imprimeCiclo(Descritor **info, int *count)
         printf("Quantidade atual de combustivel: %d\n", aux->quantCombustivel);
         if (aux->capacidadeMax == aux->quantCombustivel)
         {
-            (*count)++;
-            printf("NAVE CHEIA! REMOVENDO NAVE DOS PROXIMOS CICLOS...\n\n");
+            printf("NAVE CHEIA!\n");
         }
         aux = aux->prox;
     } while (aux != (*info)->head);
@@ -149,7 +89,7 @@ void menu(No **ll, Descritor *info)
 {
     while (1)
     {
-        int op = 0, capacidadeMax = 0, quantInic = 0, unidCombustivel = 0, count = 0;
+        int op = 0, capacidadeMax = 0, quantInic = 0, unidCombustivel = 0, countCheia = 0, countNaves = 0;
         printf("\t__CICLO DE NAVES__\n");
         printf("[1] Adicionar uma nave ao ciclo\n");
         printf("[2] Nao adicionar uma nave nesse ciclo\n");
@@ -163,6 +103,7 @@ void menu(No **ll, Descritor *info)
         switch (op)
         {
         case 1:
+            countNaves++;
             printf("\t\t__NOVA NAVE__\n");
             printf("Digite a capacidade maxima de combustivel da nave: ");
             scanf("%d", &capacidadeMax);
@@ -174,7 +115,7 @@ void menu(No **ll, Descritor *info)
             adicionarElemento(capacidadeMax, quantInic, ll, &info);
             abastecerNaves(&info, unidCombustivel);
 
-            imprimeCiclo(&info, &count);
+            imprimeCiclo(&info);
             break;
         case 2:
             if (info->head == NULL)
@@ -182,12 +123,13 @@ void menu(No **ll, Descritor *info)
                 printf("\nNENHUMA NAVE NO CICLO!!\n\n");
                 break;
             }
+
             printf("\nDigite a quantidade de combustivel a ser inserido nesse ciclo: ");
             scanf("%d", &unidCombustivel);
 
             abastecerNaves(&info, unidCombustivel);
 
-            imprimeCiclo(&info, &count);
+            imprimeCiclo(&info);
             break;
         case 0:
             return;
@@ -196,6 +138,18 @@ void menu(No **ll, Descritor *info)
             break;
         }
 
-        removeNave(ll, &info, &count);
+        if(info->head != NULL) {
+            No *aux = info->head;
+
+            do {
+                if(aux->capacidadeMax <= aux->quantCombustivel) {
+                    countCheia++;
+                }
+
+                aux = aux->prox;
+            } while(aux != info->head);
+
+            if(countCheia != 0 && countCheia == countNaves) return;
+        }
     }
 }
