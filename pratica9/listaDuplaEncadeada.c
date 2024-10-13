@@ -375,7 +375,7 @@ void menu(Descritor **lista1, Descritor **lista2)
             scanf("%d", &op);
 
             if(op != 1 && op != 2) {
-                printf("Opcao INVALIDA!\n");
+                printf("Opcao INVALIDA!\n\n");
                 break;
             }
 
