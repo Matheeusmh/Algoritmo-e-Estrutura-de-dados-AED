@@ -372,6 +372,24 @@ void menu(Descritor **lista1, Descritor **lista2)
             }
             
             break;
+        case 8:
+            printf("Listas...\n[1] Lista A\n[2] Lista B\n OPCAO: ");
+            scanf("%d", &op);
+
+            printf("Digite o elemento que deseja remover: ");
+            scanf("%d", &elemento);
+
+            if(op == 1) {
+                procurarElementoElemento(lista1, elemento);
+            }
+            else if(op == 2) {
+                procurarElemento(lista2, elemento);
+            }
+            else {
+                printf("OPCAO INVALIDA!\n");
+            }
+            
+            break;
         case 0:
             return;
         default:
