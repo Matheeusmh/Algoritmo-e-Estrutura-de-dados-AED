@@ -274,6 +274,26 @@ void removerElemento (Descritor **ll, int elemento) {
     }
 }
 
+void procurarElemento(Descritor **ll, int elemento) {
+    if(*ll == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
+
+    Lista aux = (*ll)->inicio;
+
+    while(aux != NULL) {
+        if(aux->dados == elemento) {
+            printf("O valor %d esta na lista!\n", elemento);
+            return;
+        }
+
+        aux = aux->prox;
+    }
+
+    printf("O valor nao foi encontrado!\n");
+}
+
 void menu(Descritor **lista1, Descritor **lista2)
 {
     int op, elemento, tamanho;
@@ -287,6 +307,7 @@ void menu(Descritor **lista1, Descritor **lista2)
         printf("[5] Juntar listas adicionando no INICIO (SEM repeticao)\n");
         printf("[6] Juntar listas adicionando no FINAL\n");
         printf("[7] Remover elemento\n");
+        printf("[8] Encontrar elemento\n");
         printf("[0] Encerrar programa\n");
         printf("Opcao: ");
         scanf("%d", &op);
