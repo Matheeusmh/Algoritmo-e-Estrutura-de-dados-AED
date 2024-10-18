@@ -1,5 +1,6 @@
 #ifndef LISTA_DUPLA_ENCADEADA
 #define LISTA_DUPLA_ENCADEADA
+
 typedef struct
 {
     struct elemento *inicio;
@@ -26,6 +27,5 @@ void insereInicioNrepetidos(Descritor **lista1, Descritor **lista2);
 void insereFinal(Descritor **lista1, Descritor **lista2);
 void procurarElemento(Descritor **ll, int elemento);
 void menu(Descritor **lista1, Descritor **lista2);
-
 
 #endif

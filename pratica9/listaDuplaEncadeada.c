@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include"listaDuplaEncadeada.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "listaDuplaEncadeada.h"
 
 void iniciarLista(Descritor **lista, Elem **novo)
 {
@@ -175,15 +175,19 @@ void insereInicioNrepetidos(Descritor **lista1, Descritor **lista2)
     printf("Listas fundidas com sucesso!\n\n");
 }
 
-void insereFinal(Descritor **lista1, Descritor **lista2) {
-    if(*lista1 == NULL && *lista1 == *lista2) {
+void insereFinal(Descritor **lista1, Descritor **lista2)
+{
+    if (*lista1 == NULL && *lista1 == *lista2)
+    {
         printf("As listas estao vazias!\n\n");
         return;
     }
 
-    if(*lista1 == NULL) return;
+    if (*lista1 == NULL)
+        return;
 
-    if(*lista2 == NULL) {
+    if (*lista2 == NULL)
+    {
         *lista2 = *lista1;
         *lista1 = NULL;
         return;
@@ -192,7 +196,8 @@ void insereFinal(Descritor **lista1, Descritor **lista2) {
     Lista aux2 = (*lista2)->final;
     Lista aux1 = (*lista1)->inicio;
 
-    while(aux1 != NULL) {
+    while (aux1 != NULL)
+    {
         aux2->prox = aux1;
         aux1->ant = aux2;
         aux1 = aux1->prox;
@@ -210,18 +215,23 @@ void insereFinal(Descritor **lista1, Descritor **lista2) {
     printf("Listas fundidas com sucesso!\n\n");
 }
 
-void removerElemento (Descritor **ll, int elemento) {
-    if(*ll == NULL) {
+void removerElemento(Descritor **ll, int elemento)
+{
+    if (*ll == NULL)
+    {
         printf("Lista Vazia!\n\n");
         return;
     }
-    else {
+    else
+    {
         Lista aux = (*ll)->inicio;
 
-        if((*ll)->inicio->dados == elemento) {
+        if ((*ll)->inicio->dados == elemento)
+        {
             (*ll)->quant--;
 
-            if((*ll)->inicio == (*ll)->final) {
+            if ((*ll)->inicio == (*ll)->final)
+            {
                 free(*ll);
                 *ll = NULL;
                 printf("Elemento removido com sucesso!\n\n");
@@ -233,47 +243,55 @@ void removerElemento (Descritor **ll, int elemento) {
             free(aux);
             printf("Elemento removido com sucesso!\n\n");
         }
-        else if((*ll)->final->dados == elemento) {
+        else if ((*ll)->final->dados == elemento)
+        {
             aux = (*ll)->final;
             (*ll)->final = (*ll)->final->ant;
             (*ll)->final->prox = NULL;
             (*ll)->quant--;
             free(aux);
             printf("Elemento removido com sucesso!\n\n");
-
         }
-        else {
-            while(aux->prox != NULL && aux->prox->dados != elemento) {
+        else
+        {
+            while (aux->prox != NULL && aux->prox->dados != elemento)
+            {
                 aux = aux->prox;
             }
-        
-            if(aux->prox == NULL) {
+
+            if (aux->prox == NULL)
+            {
                 printf("Elemento NAO encontrado na lista!\n\n");
                 return;
             }
-        
+
             Lista temp = aux->prox;
-        
+
             aux->prox = temp->prox;
-            if (temp->prox != NULL) {
+            if (temp->prox != NULL)
+            {
                 temp->prox->ant = aux;
             }
             free(temp);
-            printf("Elemento NAO encontrado na lista!\n\n");
+            printf("Elemento removido com sucesso!\n\n");
         }
     }
 }
 
-void procurarElemento(Descritor **ll, int elemento) {
-    if(*ll == NULL) {
+void procurarElemento(Descritor **ll, int elemento)
+{
+    if (*ll == NULL)
+    {
         printf("Lista Vazia!\n\n");
         return;
     }
 
     Lista aux = (*ll)->inicio;
 
-    while(aux != NULL) {
-        if(aux->dados == elemento) {
+    while (aux != NULL)
+    {
+        if (aux->dados == elemento)
+        {
             printf("O valor %d esta na lista!\n\n", elemento);
             return;
         }
@@ -354,7 +372,8 @@ void menu(Descritor **lista1, Descritor **lista2)
             scanf("%d", &op);
             printf("\n");
 
-            if(op != 1 && op != 2) {
+            if (op != 1 && op != 2)
+            {
                 printf("Opcao INVALIDA!\n");
                 break;
             }
@@ -362,19 +381,22 @@ void menu(Descritor **lista1, Descritor **lista2)
             printf("Digite o elemento que deseja remover: ");
             scanf("%d", &elemento);
 
-            if(op == 1) {
+            if (op == 1)
+            {
                 removerElemento(lista1, elemento);
             }
-            else {
+            else
+            {
                 removerElemento(lista2, elemento);
             }
-            
+
             break;
         case 8:
             printf("Listas...\n[1] Lista A\n[2] Lista B\n OPCAO: ");
             scanf("%d", &op);
 
-            if(op != 1 && op != 2) {
+            if (op != 1 && op != 2)
+            {
                 printf("Opcao INVALIDA!\n\n");
                 break;
             }
@@ -382,13 +404,15 @@ void menu(Descritor **lista1, Descritor **lista2)
             printf("Digite o elemento que deseja encontrar: ");
             scanf("%d", &elemento);
 
-            if(op == 1) {
+            if (op == 1)
+            {
                 procurarElemento(lista1, elemento);
             }
-            else {
+            else
+            {
                 procurarElemento(lista2, elemento);
             }
-            
+
             break;
         case 0:
             return;
