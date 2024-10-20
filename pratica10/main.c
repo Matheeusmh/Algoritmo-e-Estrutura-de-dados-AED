@@ -32,6 +32,7 @@ void iniciarLista(No **circulo, char *nome) {
 void inserirInicio(No **circulo, char *nome) {
     if(*circulo == NULL) {
         iniciarLista(circulo, nome);
+        printf("Adicionando a lista!\n\n");
         return;
     }
 
@@ -59,6 +60,7 @@ void inserirInicio(No **circulo, char *nome) {
         aux = aux->prox;
     } while(aux != *circulo);
     
+    printf("Adicionando a lista!\n\n");
 }
 
 void percursoFrente(No **circulo) {
@@ -74,7 +76,7 @@ void percursoFrente(No **circulo) {
         aux = aux->prox;
     } while(aux != *circulo);
 
-    printf("[%dth] %s", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+    printf("[%dth] %s\n\n", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
 }
 
 void percursoTras(No **circulo) {
@@ -90,31 +92,80 @@ void percursoTras(No **circulo) {
         aux = aux->ant;
     } while(aux != *circulo);
 
-    printf("[%dth] %s", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+    printf("[%dth] %s\n\n", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+}
+
+void removerElemento(No **circulo, int posicao) {
+    if(*circulo == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
+
+    if((*circulo) -> ant == *circulo) {
+        free(*circulo);
+        *circulo = NULL;
+        printf("Elemento removido com sucesso!\n\n");
+        return;
+    }
+
+    Novo aux = *circulo;
+
+    if(posicao == 1) {
+        (*circulo)->ant->prox = (*circulo)->prox;
+        (*circulo)->prox->ant = (*circulo)->ant;
+        *circulo = (*circulo)->prox;
+    }
+    else {
+        do {
+            aux = aux->prox;
+        } while(aux->pessoa.posicao != posicao);
+
+        aux->ant->prox = aux->prox;
+        aux->prox->ant = aux->ant;
+    }
+
+    free(aux);
+
+    aux = *circulo;
+
+    do {
+        aux = aux->prox;
+        if(aux->pessoa.posicao > posicao) aux->pessoa.posicao--;
+    } while(aux != *circulo);
+
+    printf("Elemento removido com sucesso!\n\n");
 }
 
 void menu(No **circulo) {
-    int op;
+    int op, posicao;
     char nome[50];
 
     while(1) {
-        printf("[1] Inserir nó no início\n");
+        printf("[1] Inserir nó no início\n"); //Feito!
         printf("[2] Remover um nó a partir de um ponteiro\n");
-        printf("[3] Percurso para frente\n");
-        printf("[4] Percurso para trás\n");
+        printf("[3] Percurso para frente\n"); // Feito!
+        printf("[4] Percurso para trás\n"); // Feito
         printf("[5] Escolha do líder (percurso + remoção)\n");
-        printf("[0] Finalizar programa\n");
+        printf("[0] Finalizar programa\n"); // Feito
         printf(" OPCAO: ");
         scanf("%d", &op);
         getchar();
+        printf("\n");
 
         switch(op) {
             case 1:
                 printf("Digite o nome: ");
                 fgets(nome, 50, stdin);
                 nome[strcspn(nome, "\n")] = '\0';
-
                 inserirInicio(circulo, nome);
+
+                break;
+            
+            case 2:
+                printf("Digite a posicao atual do elemento que deseja remover: ");
+                scanf("%d", &posicao);
+                removerElemento(circulo, posicao);
+
                 break;
 
             case 3:
