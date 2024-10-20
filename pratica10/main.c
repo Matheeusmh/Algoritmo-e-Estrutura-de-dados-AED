@@ -17,6 +17,10 @@ typedef No* Novo;
 
 void iniciarLista(No **circulo, char *nome) {
     (*circulo) = (No *) malloc(sizeof(No));
+    if(*circulo == NULL) {
+        printf("Nao foi possivel alocar memoria!\n");
+        return;
+    }
 
     strcpy((*circulo)->pessoa.nome, nome);
     (*circulo)->pessoa.posicao = 1;
@@ -33,21 +37,22 @@ void inserirInicio(No **circulo, char *nome) {
 
     Novo novo;
     novo = (No *)malloc(sizeof(No));
+    if(novo == NULL) {
+        printf("Nao foi possivel alocar memoria!\n");
+        return;
+    }
 
     strcpy(novo->pessoa.nome, nome);
     novo->pessoa.posicao = 0;
-    
-    Novo aux = *circulo;
 
-    do {
-        aux = aux->prox;
-    } while(aux != *circulo);
-
-    aux->prox = novo;
-    novo->ant = aux;
+    (*circulo)->ant->prox = novo;
     novo->prox = *circulo;
+    novo->ant = (*circulo)->ant;
+    (*circulo)->ant = novo;
 
-    aux = *circulo;
+    *circulo = novo;
+
+    Novo aux = *circulo;
 
     do {
         aux->pessoa.posicao++;
@@ -58,17 +63,34 @@ void inserirInicio(No **circulo, char *nome) {
 
 void percursoFrente(No **circulo) {
     if(*circulo == NULL) {
-        printf("Lista Vazia!!\n");
+        printf("Lista Vazia!\n");
+        return;
     }
 
     Novo aux = *circulo;
 
     do {
-        printf("[%dth] %s -> ", aux->pessoa.nome);
+        printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
         aux = aux->prox;
     } while(aux != *circulo);
 
-    printf("%s", (*circulo)->pessoa.nome);
+    printf("[%dth] %s", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+}
+
+void percursoTras(No **circulo) {
+    if(*circulo == NULL) {
+        printf("Lista Vazia!\n");
+        return;
+    }
+
+    Novo aux = *circulo;
+
+    do {
+        printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
+        aux = aux->ant;
+    } while(aux != *circulo);
+
+    printf("[%dth] %s", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
 }
 
 void menu(No **circulo) {
@@ -84,10 +106,23 @@ void menu(No **circulo) {
         printf("[0] Finalizar programa\n");
         printf(" OPCAO: ");
         scanf("%d", &op);
+        getchar();
 
         switch(op) {
             case 1:
+                printf("Digite o nome: ");
+                fgets(nome, 50, stdin);
+                nome[strcspn(nome, "\n")] = '\0';
+
                 inserirInicio(circulo, nome);
+                break;
+
+            case 3:
+                percursoFrente(circulo);
+                break;
+            
+            case 4:
+                percursoTras(circulo);
                 break;
 
             case 0:
@@ -101,8 +136,9 @@ void menu(No **circulo) {
 }
 
 int main(void) {
-    No *circulo;
+    No *circulo = NULL;
 
     menu(&circulo);
+
     return 0;
 }
