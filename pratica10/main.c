@@ -41,7 +41,7 @@ void inserirInicio(No **circulo, char *nome) {
 
     do {
         aux = aux->prox;
-    } while(aux->prox != *circulo);
+    } while(aux != *circulo);
 
     aux->prox = novo;
     novo->ant = aux;
@@ -54,6 +54,21 @@ void inserirInicio(No **circulo, char *nome) {
         aux = aux->prox;
     } while(aux != *circulo);
     
+}
+
+void percursoFrente(No **circulo) {
+    if(*circulo == NULL) {
+        printf("Lista Vazia!!\n");
+    }
+
+    Novo aux = *circulo;
+
+    do {
+        printf("[%dth] %s -> ", aux->pessoa.nome);
+        aux = aux->prox;
+    } while(aux != *circulo);
+
+    printf("%s", (*circulo)->pessoa.nome);
 }
 
 void menu(No **circulo) {
@@ -74,6 +89,13 @@ void menu(No **circulo) {
             case 1:
                 inserirInicio(circulo, nome);
                 break;
+
+            case 0:
+                return;
+            
+            default:
+                printf("Opcao INVALIDA!\n");
+                break;
         }
     }
 }
@@ -81,6 +103,6 @@ void menu(No **circulo) {
 int main(void) {
     No *circulo;
 
-    main(&circulo);
+    menu(&circulo);
     return 0;
 }
