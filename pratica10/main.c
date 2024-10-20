@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct {
     char nome[50];
@@ -63,7 +64,7 @@ void inserirInicio(No **circulo, char *nome) {
     printf("Adicionando a lista!\n\n");
 }
 
-void percursoFrente(No **circulo) {
+void percursoFrente(No **circulo, int k) {
     if(*circulo == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -71,15 +72,27 @@ void percursoFrente(No **circulo) {
 
     Novo aux = *circulo;
 
-    do {
-        printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
-        aux = aux->prox;
-    } while(aux != *circulo);
+    if(k != -1) {
+        do {
+            printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
 
-    printf("[%dth] %s\n\n", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+            k--;
+            aux = aux->prox;
+        } while(k != 0);
+
+        *circulo = aux;
+    }
+    else {
+        do {
+            printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
+            aux = aux->prox;
+        } while(aux != *circulo);
+
+        printf("[%dth] %s\n\n", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+    }
 }
 
-void percursoTras(No **circulo) {
+void percursoTras(No **circulo, int k) {
     if(*circulo == NULL) {
         printf("Lista Vazia!\n");
         return;
@@ -87,12 +100,23 @@ void percursoTras(No **circulo) {
 
     Novo aux = *circulo;
 
-    do {
-        printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
-        aux = aux->ant;
-    } while(aux != *circulo);
+    if(k != -1) {    
+        do {
+            printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
+            k--;
+            aux = aux->ant;
+        } while(k != 0);
 
-    printf("[%dth] %s\n\n", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+        *circulo = aux;
+    }
+    else {
+        do {
+            printf("[%dth] %s -> ", aux->pessoa.posicao, aux->pessoa.nome);
+            aux = aux->ant;
+        } while(aux != *circulo);
+
+        printf("[%dth] %s\n\n", (*circulo)->pessoa.posicao, (*circulo)->pessoa.nome);
+    }
 }
 
 void removerElemento(No **circulo, int posicao) {
@@ -136,13 +160,41 @@ void removerElemento(No **circulo, int posicao) {
     printf("Elemento removido com sucesso!\n\n");
 }
 
+void sortear(No **circulo, int k) {
+    if(*circulo == NULL) {
+        printf("Lista Vazia!\n");
+    }
+    else {
+        Novo aux = *circulo;
+
+        k = k - 1;
+        int posicaoRemover;
+
+        do {
+            percursoFrente(&aux, k);
+            posicaoRemover = aux->pessoa.posicao;
+            aux = aux->ant;
+            removerElemento(circulo, posicaoRemover);
+
+            if((*circulo)->prox == *circulo) break;
+
+            percursoTras(&aux, k);
+            posicaoRemover = aux->pessoa.posicao;
+            aux = aux->prox;
+            removerElemento(circulo, posicaoRemover);
+        } while((*circulo)->prox != *circulo);
+
+        printf("Lider sorteado: %s\n\n", (*circulo)->pessoa.nome);
+    }
+}
+
 void menu(No **circulo) {
     int op, posicao;
     char nome[50];
 
     while(1) {
         printf("[1] Inserir nó no início\n"); //Feito!
-        printf("[2] Remover um nó a partir de um ponteiro\n");
+        printf("[2] Remover um nó a partir de um ponteiro\n"); //Feito!
         printf("[3] Percurso para frente\n"); // Feito!
         printf("[4] Percurso para trás\n"); // Feito
         printf("[5] Escolha do líder (percurso + remoção)\n");
@@ -169,11 +221,22 @@ void menu(No **circulo) {
                 break;
 
             case 3:
-                percursoFrente(circulo);
+                percursoFrente(circulo, -1);
                 break;
             
             case 4:
-                percursoTras(circulo);
+                percursoTras(circulo, -1);
+                break;
+
+            case 5: 
+                srand(time(NULL));
+                int random = (rand() % 1000) + 1;
+
+                printf("O numero sorteado foi: %d\n", random);
+                printf("__SORTEIO__\n\n");
+                
+                sortear(circulo, random);
+
                 break;
 
             case 0:
