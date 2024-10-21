@@ -18,6 +18,11 @@ typedef struct {
 typedef No *Novo;
 
 void iniciarLista(Descritor **dadosDicionario) {
+    *dadosDicionario = (Descritor *)malloc(sizeof(Descritor));
+    if(*dadosDicionario == NULL) {
+        printf("Nao foi possicel alocar memoria!\n");
+        return;
+    }
     (*dadosDicionario)->inicio = NULL;
     (*dadosDicionario)->fim = NULL;
     (*dadosDicionario)->quant = 0;
@@ -26,7 +31,6 @@ void iniciarLista(Descritor **dadosDicionario) {
 void adicionarLista(Descritor **dadosDicionario, char *verbete, char *classificacao, char *significado) {
     if(*dadosDicionario == NULL) {
         iniciarLista(dadosDicionario);
-        return;
     }
 
     Novo novo;
@@ -93,12 +97,25 @@ void leituraArquivos(Descritor **dadosDicionario) {
     fclose(arquivo);
 }
 
+void imprime(Descritor **ll) {
+Novo aux = (*ll)->inicio;
+
+    while(aux != NULL) {   
+        printf("%s\n", aux->verbete);
+        printf("%s\n", aux->classificacao);
+        printf("%s\n", aux->significado);
+        aux = aux->prox;
+    }
+}
+
 
 int main()
 {
     Descritor *dadosDicionario = NULL;
 
     leituraArquivos(&dadosDicionario);
+
+    imprime(&dadosDicionario);
 
     return 0;
 }
