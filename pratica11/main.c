@@ -5,7 +5,7 @@
 typedef struct no {
     char verbete[20];
     char classificacao[20];
-    char significado[20];
+    char significado[100];
     struct no *prox;
 } No;
 
@@ -55,23 +55,24 @@ void adicionarLista(Descritor **dadosDicionario, char *verbete, char *classifica
             novo->prox = (*dadosDicionario)->inicio;
             (*dadosDicionario)->inicio = novo;
         }
-        else if(strcmp(novo->verbete, (*dadosDicionario)->fim) > 0) {
+        else if(strcmp(novo->verbete, (*dadosDicionario)->fim->verbete) > 0) {
             (*dadosDicionario)->fim->prox = novo;
             (*dadosDicionario)->fim = novo;
         }
         else {
             Novo aux = (*dadosDicionario)->inicio;
 
-            while(strcmp(novo->verbete, aux->verbete) >= 0) {
+            while(strcmp(novo->verbete, aux->prox->verbete) >= 0) {
                 if(strcmp(novo->verbete, aux->prox->verbete) == 0) {
                     printf("O verbete ja esta no dicionario!");
                     return;
                 }
-
                 aux = aux->prox;
             }
-        }
 
+                novo->prox = aux->prox;
+                aux->prox = novo;
+        }
     }
 
     (*dadosDicionario)->quant++;
@@ -79,19 +80,21 @@ void adicionarLista(Descritor **dadosDicionario, char *verbete, char *classifica
 
 void leituraArquivos(Descritor **dadosDicionario) {
     FILE *arquivo;
-    char verbete[20], classificacao[20], significado[20];
+    char verbete[20], classificacao[20], significado[100];
     
-    arquivo = fopen("path/to/your/file.txt", "r");
+    arquivo = fopen("verbetes.txt", "r");
     if(arquivo == NULL) {
         printf("Erro ao abrir o arquivo!");
         return;
     }
     
-    while(fscanf(arquivo, "%19s", verbete) == 1) {
-        fscanf(arquivo, "%19s", classificacao);
-        fscanf(arquivo, " %99[^\n]", significado);
-        adicionarLista(dadosDicionario, verbete, classificacao, significado);
-        fscanf(arquivo, "\n"); 
+    while(fscanf(arquivo, "%19s %19s ", verbete, classificacao) == 2) {
+        // Use fgets para ler a linha do significado
+        if(fgets(significado, sizeof(significado), arquivo) != NULL) {
+            // Remover a quebra de linha do final da string
+            significado[strcspn(significado, "\n")] = '\0';
+            adicionarLista(dadosDicionario, verbete, classificacao, significado);
+        }
     }
 
     fclose(arquivo);
