@@ -23,6 +23,8 @@ void iniciarLista(Descritor **dadosDicionario) {
         printf("Nao foi possicel alocar memoria!\n");
         return;
     }
+
+    
     (*dadosDicionario)->inicio = NULL;
     (*dadosDicionario)->fim = NULL;
     (*dadosDicionario)->quant = 0;
@@ -45,10 +47,9 @@ void adicionarLista(Descritor **dadosDicionario, char *verbete, char *classifica
     strcpy(novo->significado, significado);
     novo->prox = NULL;
 
-    if((*dadosDicionario)->fim == (*dadosDicionario)->inicio && (*dadosDicionario)->inicio == NULL) {
+    if((*dadosDicionario)->inicio == NULL) {
         (*dadosDicionario)->inicio = novo;
         (*dadosDicionario)->fim = novo;
-
     }
     else {
         if(strcmp(novo->verbete, (*dadosDicionario)->inicio->verbete) < 0) {
@@ -62,8 +63,8 @@ void adicionarLista(Descritor **dadosDicionario, char *verbete, char *classifica
         else {
             Novo aux = (*dadosDicionario)->inicio;
 
-            while(strcmp(novo->verbete, aux->prox->verbete) >= 0) {
-                if(strcmp(novo->verbete, aux->prox->verbete) == 0) {
+            while(strcmp(novo->verbete, aux->verbete) >= 0) {
+                if(strcmp(novo->verbete, aux->verbete) == 0) {
                     printf("O verbete ja esta no dicionario!");
                     return;
                 }
@@ -88,13 +89,8 @@ void leituraArquivos(Descritor **dadosDicionario) {
         return;
     }
     
-    while(fscanf(arquivo, "%19s %19s ", verbete, classificacao) == 2) {
-        // Use fgets para ler a linha do significado
-        if(fgets(significado, sizeof(significado), arquivo) != NULL) {
-            // Remover a quebra de linha do final da string
-            significado[strcspn(significado, "\n")] = '\0';
-            adicionarLista(dadosDicionario, verbete, classificacao, significado);
-        }
+    while(fscanf(arquivo, "%19s %19s %99[^\n]", verbete, classificacao, significado) != EOF) {
+        adicionarLista(dadosDicionario, verbete, classificacao, significado);
     }
 
     fclose(arquivo);
@@ -111,6 +107,55 @@ Novo aux = (*ll)->inicio;
     }
 }
 
+void encontreVerbete(Descritor **dadosDicionario, char *palavra) {
+    if(*dadosDicionario == NULL) {
+        printf("Nenhum verbete foi introduzido!\n");
+        return;
+    }
+
+    Novo aux = (*dadosDicionario)->inicio;
+
+    while(strcmp(aux->verbete, palavra) != 0) {
+        aux = aux->prox;
+        if(aux == NULL) {
+            printf("\nVerbete nao encontrado!\n\n");
+            return;
+        }
+    }
+
+    printf("\nVerbete: %s\n", aux->verbete);
+    printf("Classificacao: %s\n", aux->classificacao);
+    printf("Significado: %s\n\n", aux->significado);
+}
+
+void menu(Descritor **dadosDicionario) {
+    while(1) {
+        int op = 0;
+
+        printf("Escolha uma opcao...\n");
+        printf("[1] Encontrar um verbete\n");
+        printf("[2] Letra c\n"); // Nao achei nenhuma aplicacao :(
+        printf("[0] Encerrar programa\n");
+        printf(" OPCAO: ");
+        scanf("%d", &op);
+
+        switch(op) {
+            case 1:
+                char palavra[20];
+                printf("Digite o verbete: ");
+                scanf("%s", &palavra);
+                
+                encontreVerbete(dadosDicionario, palavra);
+                
+                break;
+            case 0:
+                return;
+            default:
+                break;
+        }
+    }
+}
+
 
 int main()
 {
@@ -118,7 +163,7 @@ int main()
 
     leituraArquivos(&dadosDicionario);
 
-    imprime(&dadosDicionario);
+    menu(&dadosDicionario);
 
     return 0;
 }
