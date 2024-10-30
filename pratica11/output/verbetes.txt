@@ -1,61 +1,61 @@
 Abdicar
 Verbo
 Renunciar voluntariamente a um direito ou cargo.
-Benigno
-Adjetivo
-Que é gentil, favorável ou de natureza branda.
 Celeridade
 Substantivo 
-Qualidade de ser rápido ou ágil.
-Débil
+Qualidade de ser rapido ou agil.
+Debil
 Adjetivo
-Que possui pouca força ou vigor.
-Efêmero
+Que possui pouca forca ou vigor.
+Benigno
+Adjetivo
+Que eh gentil, favoravel ou de natureza branda.
+Efemero
 Adjetivo
 Que dura por pouco tempo, passageiro.
-Frívolo
+Frivolo
 Adjetivo
-Sem importância, superficial.
-Gratuito
-Adjetivo
-Que é oferecido sem custo ou sem justificativa.
-Hedônico
-Adjetivo
-Relacionado ao prazer ou à busca do prazer.
-Incólume
-Adjetivo
-Que permanece intacto, sem danos.
+Sem importancia, superficial.
 Justapor
 Verbo
 Colocar lado a lado ou unir sem fundir.
-Lúdico
+Ludico
 Adjetivo
 Relacionado a jogos ou brincadeiras, divertido.
-Mórbido
+Morbido
 Adjetivo
-Ligado a doenças ou a algo macabro.
+Ligado a doencas ou a algo macabro.
+Gratuito
+Adjetivo
+Que eh oferecido sem custo ou sem justificativa.
+Hedonico
+Adjetivo
+Relacionado ao prazer ou a busca do prazer.
+Incolume
+Adjetivo
+Que permanece intacto, sem danos.
 Nefasto
 Adjetivo
 Extremamente prejudicial ou destrutivo.
-Onírico
+Onirico
 Adjetivo
 Relacionado aos sonhos.
-Parcimônia
+Parcimonia
 Substantivo
-Moderação, economia no uso de recursos.
+Moderacao, economia no uso de recursos.
 Quimera
 Substantivo
-Algo irreal, fruto da imaginação.
+Algo irreal, fruto da imaginacao.
 Resiliente
 Adjetivo
 Capaz de se adaptar e recuperar-se de adversidades.
 Soberba
 Substantivo
-Orgulho excessivo, arrogância.
+Orgulho excessivo, arrogancia.
 Taciturno
 Adjetivo
-Que é reservado, calado, de poucas palavras.
-Ubíquo
+Que eh reservado, calado, de poucas palavras.
+Ubiquo
 Adjetivo
-Que está presente em vários lugares ao mesmo tempo.
+Que esta presente em varios lugares ao mesmo tempo.
 
