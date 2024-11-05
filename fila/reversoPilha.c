@@ -6,6 +6,15 @@ typedef struct fila {
     struct fila *prox;
 } Fila;
 
+typedef struct pilha {
+    int valor;
+    struct pilha *prox;
+} Pilha;
+
+void inciarPilha(Pilha **pilha) {
+    *pilha = NULL;
+}
+
 void iniciarFila(Fila **ff) {
     (*ff) = NULL;
 }
@@ -30,6 +39,30 @@ void adicionarElemento(Fila **ff, int x) {
         aux->prox = novo;
     }
 }
+void push(Pilha **pp, int x) {
+    Pilha *novo;
+    novo = (Pilha *)malloc(sizeof(Pilha));
+
+    novo->valor = x;
+    novo->prox = NULL;
+
+    if(*pp != NULL) {
+        novo->prox = *pp;
+    }
+
+    *pp = novo;
+}
+
+int pop(Pilha **pp) {
+    Pilha *temp = *pp;
+    int x = (*pp)->valor;
+
+    *pp = (*pp)->prox;
+
+    free(temp);
+
+    return x;
+}
 
 int desenfilera(Fila **ff) {
     int x = (*ff)->valor;
@@ -42,13 +75,13 @@ int desenfilera(Fila **ff) {
     return x;
 }
 
-void inverterFila(Fila **ff) {
-    int x;
+void inverterFila(Fila **ff, Pilha **pp) {
+    while(*ff != NULL) {
+        push(pp, desenfilera(ff));
+    }
 
-    if(*ff != NULL) {
-        x = desenfilera(ff);
-        inverterFila(ff);
-        adicionarElemento(ff, x);
+    while(*pp != NULL) {
+        adicionarElemento(ff, pop(pp));
     }
 }
 
@@ -56,11 +89,14 @@ int main(void) {
     Fila *ff;
     iniciarFila(&ff);
 
+    Pilha *pp;
+    inciarPilha(&pp);
+
     for(int i = 1; i <= 10; i++) {
         adicionarElemento(&ff, i);
     }
 
-    inverterFila(&ff);
+    inverterFila(&ff, &pp);
 
     for(int i = 1; i <= 10; i++) {
         printf("%d\n", desenfilera(&ff));
